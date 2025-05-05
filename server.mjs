@@ -38,7 +38,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/home', (req, res) => {
-    res.render('index', { title: 'HOME', message: 'THIS IS HOME PAGE OF "336Final"' });
+    res.render('index', { title: 'HOME', message: 'THIS IS HOME PAGE OF "336Final"', isAdmin: req.session.isAdmin, isAuthenticated: req.session.userAuthenticated });
     // res.render('login.ejs', { title: 'Login', message: 'Login to your account' });
 });
 
@@ -137,9 +137,14 @@ app.post('/login', async (req, res) => {
     if (password == db_password) {
         req.session.userAuthenticated = true;
         req.session.fullName = rows[0].firstName + " " + rows[0].lastName;
+        req.session.userId = rows[0].userId;
+        req.session.isAdmin = false;
+        if (rows[0].userId == 0) {
+            req.session.isAdmin = true;
+        }
         res.redirect('/home'); //whatever page is home here
     } else {
-        res.render('login.ejs', {"error":"Wrong credentials!"})
+        res.render('login.ejs', {error:"Wrong credentials!"})
     }
  });
 
@@ -171,19 +176,32 @@ app.post('/register', async (req, res) => {
   res.render('login.ejs');
 });
 
-app.get('/accounts', isAdmin, async(req, res) => {
-  let sql = `SELECT * FROM users`;
-  const [users] = await pool.query(sql);
-  res.render("accounts.ejs", { users });
+app.get('/accounts', isAdmin, async (req, res) => {
+    let sql = `SELECT * FROM users`;
+    const [users] = await pool.query(sql);
+    res.render("accounts.ejs", { users });
 });
 
-app.get('/deleteAccount', isAdmin, async(req, res) => {
+app.post('/deleteAccount', isAdmin, async (req, res) => {
     let userId = req.query.userId;
     let sql = `DELETE FROM users WHERE userId = ?`;
-    let sqlParams = [userId];
-    const [rows] = await pool.query(sql, sqlParams);
-    console.log(rows);
+    await pool.query(sql, [userId]);
     res.redirect("/accounts");
+});
+
+app.get('/updateLogin', isAuthenticated, async (req, res) => {
+    let sql = `SELECT * FROM users WHERE userId = ?`;
+    const [rows] = await pool.query(sql, [req.session.userId]);
+    res.render('updateLogin.ejs', { user: rows[0] });
+});
+
+app.post('/updateLogin', isAuthenticated, async (req, res) => {
+    let username = req.body.username;
+    let password = req.body.password;
+    let sql = `UPDATE users SET username = ?, password = ? WHERE userId = ?`;
+    let params = [username, password, req.session.userId];
+    await pool.query(sql, params);
+    res.redirect('/home'); //whatever page is home here
 });
   
 
@@ -201,11 +219,10 @@ function isAuthenticated(req, res, next){
     }
 }
 
-function isAdmin(req, res, next){
-    if(req.session.userAuthenticated && req.session.isAdmin){
+function isAdmin(req, res, next) {
+    if (req.session.userAuthenticated && req.session.isAdmin) {
         next();
-    }
-    else{
-        res.redirect("/index.ejs"); //wathever page is home here
+    } else {
+        res.status(403).send("Access denied. Admins only.");
     }
 }

@@ -4,6 +4,13 @@
         <a href="/findFlight">FLIGHT</a>
         <a href="/TRAIN">TRACKED</a>
         <a href="/USER">MINE</a>
+        <% if (isAdmin) { %>
+            <a href="/accounts" class="btn btn-primary">Manage Accounts</a>
+        <% } %>
+        <% if (isAuthenticated) { %>
+            <a href="/updateLogin" class="btn btn-primary">Update Login Info</a>
+            <a href="/logout" class="btn btn-danger">Logout</a>
+        <% } %>
     </nav>
 
 
