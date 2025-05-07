@@ -55,9 +55,7 @@
                         </small>
                       </div>
 
-                      <% // Check if there is a layover after this segment if (segmentIndex < itinerary.segments.length
-                        - 1) { const layoverTime=Math.floor((new Date(itinerary.segments[segmentIndex + 1].departure.at)
-                        - arrivalTime) / (60 * 1000)); %>
+                      <%if(segmentIndex < itinerary.segments.length- 1) { const layoverTime=Math.floor((new Date(itinerary.segments[segmentIndex + 1].departure.at)- arrivalTime) / (60 * 1000)); %>
                         <div class="alert alert-warning py-1 px-2">
                           Layover at <strong>
                             <%= segment.arrival.iataCode %>
