@@ -233,7 +233,7 @@ app.get('/accounts', isAdmin, async (req, res) => {
 });
 
 app.post('/deleteAccount', isAdmin, async (req, res) => {
-  let userId = req.query.userId;
+  let userId = req.body.userId;
   let sql = `DELETE FROM users WHERE userId = ?`;
   await pool.query(sql, [userId]);
   res.redirect("/accounts");
