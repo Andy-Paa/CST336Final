@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/home', (req, res) => {
-    res.render('index', { title: 'HOME', message: '"OUR PLANES DONT FALL ONLY LAND FOR YOU" ----Giggity Flights', isAdmin: req.session.isAdmin, isAuthenticated: req.session.userAuthenticated, currentPath: '/home' });
+    res.render('index', { title: 'HOME', message: 'If you are low, we will get you high for the best price. Giggty Flights®', isAdmin: req.session.isAdmin, isAuthenticated: req.session.userAuthenticated, currentPath: '/home' });
     // res.render('login.ejs', { title: 'Login', message: 'Login to your account' });
 });
 
