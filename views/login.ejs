@@ -1,39 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="/css/style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Login</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Login</title>
 </head>
+
 <body>
   <main class="d-flex justify-content-center align-items-center py-5">
     <div class="card shadow" style="width: 22rem;">
       <div class="card-body">
         <h1 class="card-title text-center mb-4">Login</h1>
 
-        <% if (typeof error !== 'undefined') { %>
-          <div class="alert alert-danger text-center"><%= error %></div>
-        <% } %>
-
-        <form action="/login" method="POST">
-          <div class="mb-3">
-            <label for="username" class="form-label">Username:</label>
-            <input type="text" name="username" id="username" class="form-control" required>
+        <% if (typeof error !=='undefined' ) { %>
+          <div class="alert alert-danger text-center">
+            <%= error %>
           </div>
+          <% } %>
 
-          <div class="mb-3">
-            <label for="password" class="form-label">Password:</label>
-            <input type="password" name="password" id="password" class="form-control" required>
-          </div>
+            <form action="/login" method="POST">
+              <div class="mb-3">
+                <label for="username" class="form-label">Username:</label>
+                <input type="text" name="username" id="username" class="form-control" required>
+              </div>
 
-          <button type="submit" class="btn btn-primary w-100 mb-2">Login</button>
-        </form>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" name="password" id="password" class="form-control" required>
+              </div>
 
-        <form action="/signUp" method="GET">
-          <button type="submit" class="btn btn-secondary w-100">Create Account</button>
-        </form>
+              <button type="submit" class="btn btn-primary w-100 mb-2">Login</button>
+            </form>
+
+            <form action="/signUp" method="GET">
+              <button type="submit" class="btn btn-secondary w-100">Create Account</button>
+            </form>
       </div>
     </div>
   </main>
@@ -41,26 +45,27 @@
   <%- include('partials/footer') %>
 </body>
 <script>
-    document.querySelector('form[action="/login"]').addEventListener('submit', function (event) {
-        const loadingImage = document.createElement('img');
-        loadingImage.src = '/img/restart.png';
-        loadingImage.alt = 'Loading...';
-        loadingImage.style.width = '50px';
-        loadingImage.style.height = '50px';
-        loadingImage.style.animation = 'spin 1s linear infinite';
-        loadingImage.style.display = 'block';
-        loadingImage.style.margin = '20px auto';
+  document.querySelector('form[action="/login"]').addEventListener('submit', function (event) {
+    const loadingImage = document.createElement('img');
+    loadingImage.src = '/img/restart.png';
+    loadingImage.alt = 'Loading...';
+    loadingImage.style.width = '50px';
+    loadingImage.style.height = '50px';
+    loadingImage.style.animation = 'spin 1s linear infinite';
+    loadingImage.style.display = 'block';
+    loadingImage.style.margin = '20px auto';
 
-        document.body.appendChild(loadingImage);
+    document.body.appendChild(loadingImage);
 
-        const style = document.createElement('style');
-        style.innerHTML = `
+    const style = document.createElement('style');
+    style.innerHTML = `
           @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
           }
         `;
-        document.head.appendChild(style);
-    });
+    document.head.appendChild(style);
+  });
 </script>
+
 </html>
