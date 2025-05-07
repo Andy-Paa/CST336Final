@@ -40,4 +40,27 @@
 
   <%- include('partials/footer') %>
 </body>
+<script>
+    document.querySelector('form[action="/login"]').addEventListener('submit', function (event) {
+        const loadingImage = document.createElement('img');
+        loadingImage.src = '/img/restart.png';
+        loadingImage.alt = 'Loading...';
+        loadingImage.style.width = '50px';
+        loadingImage.style.height = '50px';
+        loadingImage.style.animation = 'spin 1s linear infinite';
+        loadingImage.style.display = 'block';
+        loadingImage.style.margin = '20px auto';
+
+        document.body.appendChild(loadingImage);
+
+        const style = document.createElement('style');
+        style.innerHTML = `
+          @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+        `;
+        document.head.appendChild(style);
+    });
+</script>
 </html>
